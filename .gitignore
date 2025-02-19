@@ -1,5 +1,5 @@
 **/*env*
-**/build
+**/.next
 **/dist
 **/node_modules
 **/backups

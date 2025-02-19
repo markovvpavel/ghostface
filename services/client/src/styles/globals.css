@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply bg-_black text-_white;
+  font-family: 'Roboto Mono';
+}
+
+body {
+  overflow: hidden;
+}
+
+.h-screen {
+  height: 100dvh !important;
+}
+
+.w-screen {
+  width: 100dvw !important;
+}
+
+:root {
+  --black: #0D0C0C;
+  --blue: #0000FF;
+  --white: #FFFFFF;
+}
