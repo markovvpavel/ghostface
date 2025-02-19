@@ -1,0 +1,70 @@
+services:
+  # client:
+  #   container_name: client_prod
+  #   build:
+  #     context: ./services/client
+  #     dockerfile: ./docker/Dockerfile.prod
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - .env
+  #   # depends_on:
+  #   #   - server
+  #   networks:
+  #     - app-network
+
+  server:
+    container_name: server_prod
+    build:
+      context: ./services/server
+      dockerfile: ./docker/Dockerfile.dev
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    container_name: database_prod
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    volumes:
+      - ./services/database/backups:/backups
+      - ./services/database/scripts:/scripts
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backup:
+    container_name: backup_prod
+    build:
+      context: ./services/database
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./services/database/backups:/backups
+    networks:
+      - app-network
+    depends_on:
+      database:
+        condition: service_healthy
+
+networks:
+  app-network:
+    driver: bridge
