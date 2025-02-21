@@ -10,84 +10,84 @@ services:
       - ./services/client:/app
     env_file:
       - .env
-    # depends_on:
-    #   - server
+    depends_on:
+      - server
     networks:
       - app-network
 
-  # server:
-  #   container_name: server_dev
-  #   restart: always
-  #   build:
-  #     context: ./services/server
-  #     dockerfile: ./docker/Dockerfile.dev
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - ./services/server:/app
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     database:
-  #       condition: service_healthy
-  #     database_test:
-  #       condition: service_healthy
-  #     redis:
-  #       condition: service_healthy
-  #   networks:
-  #     - app-network
+  server:
+    container_name: server_dev
+    restart: always
+    build:
+      context: ./services/server
+      dockerfile: ./docker/Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./services/server:/app
+    env_file:
+      - .env
+    depends_on:
+      database:
+        condition: service_healthy
+      database_test:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
 
-  # database:
-  #   container_name: database_dev
-  #   image: postgres:latest
-  #   environment:
-  #     POSTGRES_USER: "${POSTGRES_USER}"
-  #     POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-  #     POSTGRES_DB: "${POSTGRES_DB}"
-  #   volumes:
-  #     - ./services/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #   ports:
-  #     - "5432:5432"
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - app-network
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
+  database:
+    container_name: database_dev
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    volumes:
+      - ./services/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # database_test:
-  #   container_name: database_test
-  #   image: postgres:latest
-  #   environment:
-  #     POSTGRES_USER: "test"
-  #     POSTGRES_PASSWORD: "test"
-  #     POSTGRES_DB: "test"
-  #   ports:
-  #     - "5433:5432"
-  #   networks:
-  #     - app-network
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U test -d test"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
+  database_test:
+    container_name: database_test
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "test"
+      POSTGRES_PASSWORD: "test"
+      POSTGRES_DB: "test"
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # redis:
-  #   container_name: redis_dev
-  #   image: redis:latest
-  #   restart: always
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - app-network
-  #   healthcheck:
-  #     test: ["CMD", "redis-cli", "ping"]
-  #     interval: 5s
-  #     timeout: 3s
-  #     retries: 3
+  redis:
+    container_name: redis_dev
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
 networks:
   app-network:

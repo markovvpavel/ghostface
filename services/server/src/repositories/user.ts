@@ -1,5 +1,5 @@
 import { DataSource, Repository } from "typeorm";
-import { CreateUserDTO, UpdateUserDTO } from "@/dto/user";
+import { CreateUserDTO, UpdateUserDTO } from "@/dtos/user";
 import User from "@/models/User";
 
 export class UserRepository {

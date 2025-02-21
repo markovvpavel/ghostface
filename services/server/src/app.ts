@@ -13,7 +13,7 @@ app.use(helmet());
 app.use(json());
 
 app.use("/api", routes);
-app.use(rateLimiting);
+// app.use(rateLimiting);
 app.use(errorHandler);
 
 export default app;

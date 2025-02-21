@@ -1,14 +1,30 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import clsx from "clsx";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import axios from "axios";
 
 export default function HomePage() {
+  const [aliveMessage, setAliveMessage] = useState("");
+
+  useEffect(() => {
+    const handler = async () => {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/alive`
+      );
+
+      setAliveMessage(response.data.message);
+    };
+
+    handler();
+  }, []);
   return (
     <article className="h-full w-full overflow-hidden">
-      <HeroD />
-      <HeroM />
+      <p className="text-red-500">{aliveMessage}</p>
+
+      {/* <HeroD />
+      <HeroM /> */}
     </article>
   );
 }

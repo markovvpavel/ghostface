@@ -1,5 +1,5 @@
 import User from "@/models/User";
-import { CreateUserDTO, UpdateUserDTO } from "@/dto/user";
+import { CreateUserDTO, UpdateUserDTO } from "@/dtos/user";
 import { UserRepository } from "@/repositories/user";
 
 export class UserService {

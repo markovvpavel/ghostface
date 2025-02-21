@@ -1,6 +1,6 @@
 import Order from "@/models/Order";
 import User from "@/models/User";
-import { CreateUserDTO } from "@/dto/user";
+import { CreateUserDTO } from "@/dtos/user";
 import { UserRepository } from "@/repositories/user";
 import { PasswordService } from "@/services/password";
 import { UserService } from "@/services/user";
