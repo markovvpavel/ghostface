@@ -1,7 +1,8 @@
+import { UserRole } from "@/types";
 import { JwtService } from "@/services/jwt";
 import { NextFunction, Request, Response } from "express";
 
-export const authMiddleware = (allowedRoles?: ("user" | "admin")[]) => {
+export const roleMiddleware = (allowedRoles?: UserRole[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
 

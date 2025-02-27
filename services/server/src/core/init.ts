@@ -1,7 +1,7 @@
 import dataSource from "@/core/db";
-import { UserService } from "@/services/user";
+import { UserAdminRepository } from "@/modules/user/repository/user-admin";
+import { UserAdminService } from "@/modules/user/service/user-admin";
 import { PasswordService } from "@/services/password";
-import { UserRepository } from "@/repositories/user";
 
 export async function initDatabase() {
   console.log("Database start sync...");
@@ -15,9 +15,10 @@ export async function initDatabase() {
       throw new Error(`Failed to create admin`);
     }
 
-    const userRepository = new UserRepository(dataSource);
-    const userService = new UserService(userRepository);
-    const isExist = await userService.getUserByEmail(adminEmail);
+    const userAdminRepository = new UserAdminRepository(dataSource);
+    const userAdminService = new UserAdminService(userAdminRepository);
+
+    const isExist = await userAdminService.getAdminByEmail(adminEmail);
 
     if (isExist) {
       console.log(`Admin ${adminEmail} already exist`);
@@ -27,10 +28,9 @@ export async function initDatabase() {
     const passwordService = new PasswordService();
     const hashedPassword = await passwordService.hash(adminPassword);
 
-    const user = await userService.createUser({
+    const user = await userAdminService.createAdmin({
       email: adminEmail,
       password: hashedPassword,
-      role: "admin",
     });
 
     console.log(`Created admin ${user.email}`);

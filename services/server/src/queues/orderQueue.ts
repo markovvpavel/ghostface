@@ -1,6 +1,5 @@
 import { Queue, Worker } from "bullmq";
 import { redisConfig } from "@/config/redis";
-import Order from "@/models/Order";
 
 export const orderQueue = new Queue("order-expiration", {
   connection: redisConfig,
@@ -27,6 +26,7 @@ const worker = new Worker(
     console.log(
       `🔔 Processing Job ID: ${job.id}, Order ID: ${job.data.orderId}`
     );
+
     // const order = await Order.findByPk(job.data.orderId);
     // if (order && order.status === "active") {
     //   await order.update({ status: "expired" });

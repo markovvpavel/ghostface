@@ -1,7 +1,5 @@
-import User from "@/models/User";
+import { JwtPayload, JwtTokenPair } from "@/types";
 import jwt, { SignOptions } from "jsonwebtoken";
-
-type JwtPayload = Pick<User, "id" | "email" | "role">;
 
 export class JwtService {
   private secret: string;
@@ -18,5 +16,11 @@ export class JwtService {
 
   public verify(token: string): JwtPayload {
     return jwt.verify(token, this.secret) as JwtPayload;
+  }
+
+  public generateTokenPair(payload: JwtPayload): JwtTokenPair {
+    const accessToken = this.sign(payload, "15min");
+    const refreshToken = this.sign(payload, "7d");
+    return { accessToken, refreshToken };
   }
 }

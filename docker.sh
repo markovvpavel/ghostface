@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME=postgres-express-react-node
+PROJECT_NAME=ghostface
 ENV_FILE=.env
 
 MODE=$1

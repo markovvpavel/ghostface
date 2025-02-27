@@ -1,22 +1,3 @@
-// import { dbConfig } from "@/config/db";
-// import { Sequelize } from "sequelize";
-
-// class Database {
-//   private static instance: Sequelize;
-
-//   private constructor() {}
-
-//   static getInstance(): Sequelize {
-//     if (!Database.instance) {
-//       Database.instance = new Sequelize(dbConfig);
-//       console.log("Database connected");
-//     }
-//     return Database.instance;
-//   }
-// }
-
-// export default Database.getInstance();
-
 import { DataSource } from "typeorm";
 import { dbConfig } from "@/config/db";
 
